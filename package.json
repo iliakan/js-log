@@ -1,0 +1,14 @@
+{
+  "name": "javascript-log",
+  "version": "0.0.2",
+  "description": "Wrapper around winston, tunable like debug()",
+  "main": "index.js",
+  "dependencies": {
+    "winston": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ilya Kantor",
+  "license": "CC BY 3.0"
+}
