@@ -1,5 +1,5 @@
 /**
- * Flexible logging wrapper around windston
+ * Flexible logging wrapper around winston
  *
  * usage:
  *  var log = require('lib/log')(module)
@@ -34,22 +34,24 @@ var names = [], skips = [];
     }
   });
 
-function findProjectRoot() {
-  var root = module;
+function findProjectRoot(logModule) {
+  var root = logModule;
   while (root.parent) root = root.parent;
 
   var dir = path.dirname(root.filename);
-  while (!fs.existsSync(path.join(dir, 'package.json'))) {
+  while (dir != '/' && !fs.existsSync(path.join(dir, 'package.json'))) {
     dir = path.dirname(dir);
   }
+
   return path.normalize(dir);
 }
 
-var projectRoot = findProjectRoot();
 
-function getLogLevel(module) {
+function getLogLevel(logModule) {
 
-  var modulePath = module.filename.slice(projectRoot.length + 1); // models/user.js
+  var projectRoot = findProjectRoot(logModule);
+
+  var modulePath = logModule.filename.slice(projectRoot.length + 1); // models/user.js
   modulePath = modulePath.replace(/\.js$/, ''); // models.user
 
   var logLevel = 'info';
@@ -69,11 +71,11 @@ function getLogLevel(module) {
   return logLevel;
 }
 
-function getLogger(module) {
+function getLogger(logModule) {
 
-  var showPath = module.filename.split('/').slice(-2).join('/');
+  var showPath = logModule.filename.split('/').slice(-2).join('/');
 
-  var logLevel = getLogLevel(module);
+  var logLevel = getLogLevel(logModule);
   var logger = new winston.Logger({
     transports: [
       new winston.transports.Console({
@@ -93,4 +95,6 @@ function getLogger(module) {
   return logger;
 }
 
-module.exports = getLogger;
+module.exports = getLogger(module.parent);
+
+delete require.cache[__filename];
