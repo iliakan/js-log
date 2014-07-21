@@ -2,7 +2,7 @@
  * Flexible logging wrapper around winston
  *
  * usage:
- *  var log = require('lib/log')()
+ *  var log = require('js-log')()
  *  log.debug("Winston %s", "syntax");
  *
  * enabling debug directly in the code:
