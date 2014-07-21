@@ -1,6 +1,6 @@
 {
   "name": "js-log",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Configurable as winston, tunable as debug()",
   "main": "index.js",
   "dependencies": {

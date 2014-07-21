@@ -1,52 +1,70 @@
 
-# Логгер
+# Simple & configurable logger
 
-## Использование
-
+Usage:
 
 ```js
-var log = require('javascript-log')(module);
+var log = require('js-log')();
 
-log.info("Всем привет!");
+log.info("Hi everyone!");
 ```
 
-Логгер `log` -- обычный `winston`-логгером, то есть имеет методы для вывода:
+`log` is a `winston`-based logger with usual methods 
 ```
 log.debug(...)
 log.info(...)
 log.error(...)
 ```
 
-Он уже настроен на вывод с учётом имени файла модуля.
+By default it prints all messages except `log.debug()` and prepends them with module filename and directory.
 
-По умолчанию выводится только `log.info(...)` и `log.error(...)`, можно включить вывод `log.debug(...)` двумя способами:
+Methods:
 
-  1. Явный вызов `log.debugOn()`
-  2. Настроить переменную окружения `DEBUG`
+  - `log.debugOn()` -- enable debug for this very logger 
 
-## Переменная `DEBUG`
+Options:
 
-Включить отладку везде.
+```
+var log = require('js-log')({
+  module: <module object to log for>, by default - the requiring module,
+  getShowPath: <function which returns label for module>
+  getLogLevel: <function which returns log level (error/info/debug) for module>,
+  getTransports: <function which returns transports for (logLevel, label)>
+});
+```
+
+All options are optional.
+
+# DEBUG
+
+There're two ways to enable debugging.
+
+  1. Call `log.debugOn()` in the code
+  2. Use `DEBUG` environment variable
+
+Turn on all debugging:
+
 ```
 DEBUG=* node app
 ```
 
-В качестве пути указывается `*` или маска файлов, вывод которых интересует.
+`DEBUG` can be either `'*'` or a file mask to debug, in the same format as https://github.com/visionmedia/debug.
 
-Например:
+Examples:
 
 ```js
-// все файлы из директории models/* (от корня проекта)
-DEBUG=models/* node app   
+// all files from the models/* folder (from project root)
+DEBUG=models/* node app
 
-// все файлы из models/* и lib/*
+// all files from models/* and lib/*
 DEBUG=models/*,lib/* node app
 
-// все файлы models/*, кроме models/user
+// all files from models/* except models/user
 DEBUG=-models/user,models/* node app
 ```
 
-Важно, что эта переменная также используется в модуле https://github.com/visionmedia/debug, который применяется в разных фреймворках типа express, koa. 
-Таким образом, включая полную отладку своих модулей `DEBUG=*`, я также получаю отладочный вызов и из них в том числе.
+It's quite important that `DEBUG` is also used on many frameworks. 
 
+**`DEBUG=*` will enable all debug for both your loggers and internal debugging of frameworks.**
 
+Sometimes it really helps.

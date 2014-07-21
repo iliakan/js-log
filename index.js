@@ -54,6 +54,8 @@ function getLogLevel(logModule) {
   var modulePath = logModule.filename.slice(projectRoot.length + 1); // models/user.js
   modulePath = modulePath.replace(/\.js$/, ''); // models.user
 
+  console.log(projectRoot, logModule.filename, modulePath);
+
   var logLevel = 'info';
 
   var isSkipped = skips.some(function(re) {
@@ -71,19 +73,31 @@ function getLogLevel(logModule) {
   return logLevel;
 }
 
-function getLogger(logModule) {
+function getShowPath(logModule) {
+  var projectRoot = findProjectRoot(logModule);
 
-  var showPath = logModule.filename.split('/').slice(-2).join('/');
+  return logModule.filename.slice(projectRoot.length + 1).split('/').slice(-2).join('/');
+}
 
-  var logLevel = getLogLevel(logModule);
+function getTransports(level, label) {
+  return [
+    new winston.transports.Console({
+      colorize: true,
+      level: level,
+      label: label
+    })
+  ]
+}
+
+function getLogger(options) {
+  options = options || {};
+  var logModule = options.module || module.parent;
+  var showPath = (options.getShowPath || getShowPath)(logModule);
+  var logLevel = (options.getLogLevel || getLogLevel)(logModule);
+  var transports = (options.getTransports || getTransports)(logLevel, showPath);
+
   var logger = new winston.Logger({
-    transports: [
-      new winston.transports.Console({
-        colorize: true,
-        level: logLevel,
-        label: showPath
-      })
-    ]
+    transports: transports
   });
 
   logger.debugOn = function() {
@@ -95,6 +109,6 @@ function getLogger(logModule) {
   return logger;
 }
 
-module.exports = getLogger(module.parent);
+module.exports = getLogger;
 
 delete require.cache[__filename];
