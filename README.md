@@ -9,16 +9,19 @@ var log = require('js-log')();
 log.info("Hi everyone!");
 ```
 
-`log` is a `winston`-based logger with usual methods 
-```
-log.debug(...)
-log.info(...)
-log.error(...)
-```
+`log` is a `winston`-based logger with usual methods. 
 
 By default it prints all messages except `log.debug()` and prepends them with module filename and directory.
 
-Methods:
+Logging methods:
+
+  - `log.debug(...)`
+  - `log.info(...)`
+  - `log.error(...)`
+
+The signature is like `console.log`.
+
+Additionally:
 
   - `log.debugOn()` -- enable debug for this very logger 
 
