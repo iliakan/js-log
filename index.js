@@ -54,8 +54,6 @@ function getLogLevel(logModule) {
   var modulePath = logModule.filename.slice(projectRoot.length + 1); // models/user.js
   modulePath = modulePath.replace(/\.js$/, ''); // models.user
 
-  console.log(projectRoot, logModule.filename, modulePath);
-
   var logLevel = 'info';
 
   var isSkipped = skips.some(function(re) {
