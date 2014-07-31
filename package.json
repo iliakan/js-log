@@ -1,11 +1,12 @@
 {
   "name": "js-log",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Configurable as winston, tunable as debug()",
   "main": "index.js",
   "dependencies": {
     "winston": "*"
   },
+  "browser": "./browser.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
