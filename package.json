@@ -1,6 +1,6 @@
 {
   "name": "js-log",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Configurable as winston, tunable as debug()",
   "main": "index.js",
   "dependencies": {
@@ -10,6 +10,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Ilya Kantor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iliakan/js-log.git"
+  },
+    "author": "Ilya Kantor",
   "license": "CC-BY 3.0"
 }
