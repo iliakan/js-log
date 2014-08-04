@@ -34,6 +34,10 @@ var names = [], skips = [];
     }
   });
 
+/*
+// breaks when running tests with mocha
+// mocha is root module for tests, but /usr/local/lib/node_modules/mocha is not project root
+
 function findProjectRoot(logModule) {
   var root = logModule;
   while (root.parent) root = root.parent;
@@ -44,12 +48,12 @@ function findProjectRoot(logModule) {
   }
 
   return path.normalize(dir);
-}
+}*/
 
 
 function getLogLevel(logModule) {
 
-  var projectRoot = findProjectRoot(logModule);
+  var projectRoot = process.cwd();
 
   var modulePath = logModule.filename.slice(projectRoot.length + 1); // models/user.js
   modulePath = modulePath.replace(/\.js$/, ''); // models.user
@@ -72,7 +76,8 @@ function getLogLevel(logModule) {
 }
 
 function getShowPath(logModule) {
-  var projectRoot = findProjectRoot(logModule);
+  var projectRoot = process.cwd();
+  console.log(projectRoot, logModule.filename);
 
   return logModule.filename.slice(projectRoot.length + 1).split('/').slice(-2).join('/');
 }
@@ -84,7 +89,7 @@ function getTransports(level, label) {
       level: level,
       label: label
     })
-  ]
+  ];
 }
 
 function getLogger(options) {
